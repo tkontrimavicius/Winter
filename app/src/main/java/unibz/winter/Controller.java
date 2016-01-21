@@ -17,27 +17,32 @@ public class Controller extends Application{
 
 
 
-   private void codeTextToMorse () {
 
+
+   public String codeTextToMorse (String text) {
+       Morse translator = new Morse(text);
+       return translator.codeToMorse();
    }
 
-    private void decodeMorseToText () {
+    public String decodeMorseToText (String text) {
+        Morse translator = new Morse(text);
+        return translator.decodeFromMorse();
 
     }
 
-    private void decodeSoundToText () {
+    private void decodeSoundToText (String text) {
 
     }
 
-    private void decodeLightToText () {
+    private void decodeLightToText (String text) {
 
     }
 
-    private void codeSoundToText () {
+    private void codeSoundToText (String text) {
 
     }
 
-    private void codeLightToText () {
+    private void codeLightToText (String text) {
 
     }
 

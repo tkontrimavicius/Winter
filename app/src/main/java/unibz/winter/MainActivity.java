@@ -1,5 +1,6 @@
 package unibz.winter;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,13 +9,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
+    //The logic
+    private  Controller logic = new Controller();
+
+
+
+    private boolean flag = true;
+    private  String translatedText;
+    private String revertedText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -24,26 +36,34 @@ public class MainActivity extends AppCompatActivity {
 
         TextView translated = (TextView) findViewById(R.id.translated);
         TextView reverted = (TextView) findViewById(R.id.reverted);
+        TextView text = (TextView) findViewById(R.id.text);
 
-        Controller logic = new Controller();
+        //text to translate
+        String textToSend = "SOS";
+        text.setText("Text to send:"+textToSend);
+
+
 
         //translating from text to morse
-        String translatedText = logic.codeTextToMorse("hello");
-        translated.setText(translatedText);
+         translatedText = logic.codeTextToMorse(textToSend);
+        translated.setText("From text to morese: " +translatedText);
 
         //translating from morse to text again
-        String revertedText = logic.decodeMorseToText(translatedText);
-        reverted.setText(revertedText);
+         revertedText = logic.decodeMorseToText(translatedText);
+        reverted.setText("Translated from morse: " + revertedText);
+        Button sendButton=(Button)findViewById(R.id.send);
 
 
 
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logic.sendSoundMessage(translatedText,MainActivity.this);
+//                }
 
 
-
-
-
-
-
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

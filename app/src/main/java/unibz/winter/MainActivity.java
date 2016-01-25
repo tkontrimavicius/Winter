@@ -15,17 +15,22 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Handler;
 
 
 public class MainActivity extends AppCompatActivity {
     //The logic
     private  Controller logic = new Controller();
 
-    //playlist
+    //morse sound playlist
     Timer timer;
     MediaPlayer mp;
     ArrayList<Integer> playlist;
     int i=0;
+
+    //flashlight variables
+    boolean flashOn= false;
+    Camera cam ;
 
 
 
@@ -65,27 +70,38 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
         //send flash morse msg
         sendFlashBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //send flash button pressed
                 boolean hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-
+                System.out.println("OUTPUT: FLASH SUPPORTED ");
                 if(hasFlash)
                 {
-                    System.out.println("OUTPUT: HAS FLASH!!!! ");
-                    Camera cam = Camera.open();
-                    Camera.Parameters p = cam.getParameters();
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    cam.setParameters(p);
-                    cam.startPreview();
-                }
-                else
-                {
-                    //SHOW ALERT IR DOESNT SUPPORT FLASH
+
+                    String[] symbols = translatedText.split("");
+                    for (int i = 0; i <symbols.length ; i++) {
+                        if (symbols[i].equals(".")) {
+                            try {
+                                flashTurnOn();
+                                Thread.sleep(250);
+                                flashTurnOff();
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        } else if (symbols[i].equals("-")) {
+                            try {
+                                flashTurnOn();
+                                Thread.sleep(500);
+                                flashTurnOff();
+                            } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
 
             }
@@ -112,6 +128,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    public void flashTurnOn()
+    {
+        cam = Camera.open();
+        Camera.Parameters p = cam.getParameters();
+        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        cam.setParameters(p);
+        cam.startPreview();
+    }
+
+    public void flashTurnOff()
+    {
+        System.out.println("OUTPUT: FLASH OFF! ");
+        cam.stopPreview();
+        cam.release();
+
+    }
 
     public void playNext() {
         timer.schedule(new TimerTask() {

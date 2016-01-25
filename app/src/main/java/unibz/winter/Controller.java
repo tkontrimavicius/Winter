@@ -72,27 +72,10 @@ public class Controller extends Application{
         }
 
         System.out.println("OUTPUT: finished");
-
-
-
-
         return playlist;
 
-
-
     }
 
-    private void codeLightToText (String text) {
-
-    }
-
-    private void decodeSoundToText (String text) {
-
-    }
-
-    private void decodeLightToText (String text) {
-
-    }
 
 
 

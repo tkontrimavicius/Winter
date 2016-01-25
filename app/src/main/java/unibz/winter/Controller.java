@@ -29,8 +29,6 @@ public class Controller extends Application{
 
 
     //Making a playlist of sounds
-    private MediaPlayer mp;
-    private Timer timer;
     private ArrayList<Integer> playlist;
     private  int i=0;
 
@@ -49,95 +47,37 @@ public class Controller extends Application{
     }
     //to play the play list
 
-    public void playNext(final Context context) {
-                mp.reset();
-                mp = MediaPlayer.create(context,playlist.get(++i));
-                mp.start();
-    }
+
+    public  ArrayList<Integer> constructSoundMessage (String text) {
+        ArrayList<Integer> playlist = new ArrayList<Integer>();
+
+        String[] symbols = text.split("");
+        System.out.println("OUTPUT: "+text.length());
 
 
-
-    public void sendSoundMessage (String text, final Context context) {
-        try {
-
-         //setting word to send
-            String userphrase =  text.toLowerCase();
-             Integer wordlength = userphrase.length();
-             char[] letarray = userphrase.toCharArray();
-
-
-
-
-                playlist = new ArrayList<>();
-                playlist.add(R.raw.line2);
+        for (int i = 0; i <symbols.length ; i++) {
+//
+            if(symbols[i].equals("."))
+            {
+                System.out.println("OUTPUT: .");
                 playlist.add(R.raw.dot2);
-
-
-                mp = MediaPlayer.create(context,playlist.get(0));
-                mp.start();
-                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    public void onCompletion(MediaPlayer mp) {
-
-                        try {
-                            Log.i("Completion Listener", "Song Complete");
-                            mp.release();
-                            mp.reset();
-                            mp.setDataSource("android.resource://winter/raw/line2.mp3");
-                            mp.prepare();
-                            mp.start();
-                        }catch (Exception e){}
-                    }
-                });
-
-                ///timer = new Timer();
-                //if (playlist.size()>1) playNext(context);
-
-
-
-
-
-
-//            //Setting sounds
-//            MediaPlayer line=MediaPlayer.create(context,R.raw.line2);
-//            MediaPlayer dot=MediaPlayer.create(context,R.raw.dot2);
-
-//            //to add result in the interface
-//            TextView sendingTextView = (TextView) ((Activity) context).findViewById(R.id.sending);
 //
-//            //loop for making the sounds
-//            for(int i=0; i<wordlength; i++){
-//                if (Character.toString(letarray[i]).matches( ".")) {
-//
-//                    dot.start();
-//                  //  Thread.sleep(1000);
-//                    dot.stop();
-//
-//
-//
-//                }
-//                if (Character.toString(letarray[i]).matches( "-"))
-//                {
-//                    line.start();
-//                  //  Thread.sleep(100);
-//                    line.stop();
-//
-//
-//                }
-//                //adding the result to the text view in the interface
-//                sendingTextView.setText(sendingTextView.getText() +Character.toString(letarray[i]) );
-//                Thread.sleep(1000);
-//
-//               // Thread.sleep(1500);
-//            }
+            }
+            else if(symbols[i].equals("-"))
+            {
+                System.out.println("OUTPUT: -");
+                playlist.add(R.raw.line2);
+            }
 
-
-
-
-
-
-        } catch(Exception ex) {
-            Thread.currentThread().interrupt();
         }
+
+        System.out.println("OUTPUT: finished");
+
+
+
+
+        return playlist;
+
 
 
     }

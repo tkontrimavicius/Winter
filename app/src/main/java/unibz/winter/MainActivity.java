@@ -12,10 +12,20 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MainActivity extends AppCompatActivity {
     //The logic
     private  Controller logic = new Controller();
+
+    //playlist
+    Timer timer;
+    MediaPlayer mp;
+    ArrayList<Integer> playlist;
+    int i=0;
 
 
 
@@ -32,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         TextView translated = (TextView) findViewById(R.id.translated);
         TextView reverted = (TextView) findViewById(R.id.reverted);
         TextView text = (TextView) findViewById(R.id.text);
@@ -42,11 +50,9 @@ public class MainActivity extends AppCompatActivity {
         String textToSend = "SOS";
         text.setText("Text to send:"+textToSend);
 
-
-
         //translating from text to morse
          translatedText = logic.codeTextToMorse(textToSend);
-        translated.setText("From text to morese: " +translatedText);
+        translated.setText("From text to morse: " +translatedText);
 
         //translating from morse to text again
          revertedText = logic.decodeMorseToText(translatedText);
@@ -55,24 +61,42 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //send sound morse msg
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logic.sendSoundMessage(translatedText,MainActivity.this);
-//                }
+                playlist = logic.constructSoundMessage(translatedText);
+                mp = MediaPlayer.create(MainActivity.this, playlist.get(0));
+                mp.start();
+                timer = new Timer();
+                if (playlist.size()>1) playNext();
 
 
             }
         });
+    }
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
+    public void playNext() {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mp.reset();
+                mp = MediaPlayer.create(MainActivity.this,playlist.get(++i));
+                mp.start();
+                if (playlist.size() > i+1) {
+                    playNext();
+                }
+            }
+        },mp.getDuration());
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mp.isPlaying())
+            mp.stop();
+        timer.cancel();
+        super.onDestroy();
     }
 
     @Override

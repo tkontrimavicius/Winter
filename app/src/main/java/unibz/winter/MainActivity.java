@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,22 +22,18 @@ import java.util.logging.Handler;
 public class MainActivity extends AppCompatActivity {
     //The logic
     private  Controller logic = new Controller();
-
-    //morse sound playlist
-    Timer timer;
-    MediaPlayer mp;
-    ArrayList<Integer> playlist;
-    int i=0;
-
-    //flashlight variables
-    boolean flashOn= false;
-    Camera cam ;
-
-
-
-    private boolean flag = true;
     private  String translatedText;
     private String revertedText;
+
+    //morse sound playlist
+    private Timer timer;
+    private MediaPlayer mp;
+    private ArrayList<Integer> playlist;
+    private int i=0;
+
+    //flashlight variables
+    //boolean flashOn= false;
+    private Camera cam ;
 
 
     @Override
@@ -46,34 +43,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//
+//        TextView translated = (TextView) findViewById(R.id.translated);
+//        TextView reverted = (TextView) findViewById(R.id.reverted);
+//        TextView text = (TextView) findViewById(R.id.text);
+//
+//        //text to translate
+//        String textToSend = "SOS";
+//        text.setText("Example text to send:"+textToSend);
+//
+//        //translating from text to morse
+//         translatedText = logic.codeTextToMorse(textToSend);
+//        translated.setText("From text to morse: " +translatedText);
+//
+//        //translating from morse to text again
+//         revertedText = logic.decodeMorseToText(translatedText);
+//        reverted.setText("Translated from morse: " + revertedText);
 
-        TextView translated = (TextView) findViewById(R.id.translated);
-        TextView reverted = (TextView) findViewById(R.id.reverted);
-        TextView text = (TextView) findViewById(R.id.text);
 
-        //text to translate
-        String textToSend = "SOS";
-        text.setText("Text to send:"+textToSend);
-
-        //translating from text to morse
-         translatedText = logic.codeTextToMorse(textToSend);
-        translated.setText("From text to morse: " +translatedText);
-
-        //translating from morse to text again
-         revertedText = logic.decodeMorseToText(translatedText);
-        reverted.setText("Translated from morse: " + revertedText);
+        setTextMessage();
         
         //buttons
         Button sendSoundBotton=(Button)findViewById(R.id.sendSound);
         Button sendFlashBotton=(Button)findViewById(R.id.sendFlash);
 
 
-
-
         //send flash morse msg
         sendFlashBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                setTextMessage();
                 //send flash button pressed
                 boolean hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
                 System.out.println("OUTPUT: FLASH SUPPORTED ");
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         if (symbols[i].equals(".")) {
                             try {
                                 flashTurnOn();
-                                Thread.sleep(250);
+                                Thread.sleep(200);
                                 flashTurnOff();
                             } catch (InterruptedException e) {
                                 // TODO Auto-generated catch block
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (symbols[i].equals("-")) {
                             try {
                                 flashTurnOn();
-                                Thread.sleep(500);
+                                Thread.sleep(450);
                                 flashTurnOff();
                             } catch (InterruptedException e) {
                                 // TODO Auto-generated catch block
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         sendSoundBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setTextMessage();
                 playlist = logic.constructSoundMessage(translatedText);
                 i = 0;
                 mp = MediaPlayer.create(MainActivity.this, playlist.get(i));
@@ -129,6 +130,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void setTextMessage()
+    {
+        EditText txtname = (EditText)findViewById(R.id.morseMsg);
+        String textToSend      =  txtname.getText().toString();
+
+        //text to translate
+       // String textToSend = "SOS";
+        TextView translated = (TextView) findViewById(R.id.translated);
+        TextView reverted = (TextView) findViewById(R.id.reverted);
+        TextView text = (TextView) findViewById(R.id.text);
+
+
+        text.setText("Example text to send:"+textToSend);
+
+        //translating from text to morse
+        translatedText = logic.codeTextToMorse(textToSend);
+        translated.setText("From text to morse: " +translatedText);
+
+        //translating from morse to text again
+        revertedText = logic.decodeMorseToText(translatedText);
+        reverted.setText("Translated from morse: " + revertedText);
+    }
     public void flashTurnOn()
     {
         cam = Camera.open();

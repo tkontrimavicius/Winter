@@ -64,4 +64,13 @@
         android:id="@+id/sendFlash"
         android:layout_alignBottom="@+id/sendSound"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/morseMsg"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/text"
+        android:text="Message to send " />
+
 </RelativeLayout>

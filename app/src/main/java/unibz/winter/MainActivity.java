@@ -1,5 +1,7 @@
 package unibz.winter;
 
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,12 +57,42 @@ public class MainActivity extends AppCompatActivity {
         //translating from morse to text again
          revertedText = logic.decodeMorseToText(translatedText);
         reverted.setText("Translated from morse: " + revertedText);
-        Button sendButton=(Button)findViewById(R.id.sendSound);
+        
+        //buttons
+        Button sendSoundBotton=(Button)findViewById(R.id.sendSound);
+        Button sendFlashBotton=(Button)findViewById(R.id.sendFlash);
 
 
+
+
+
+
+        //send flash morse msg
+        sendFlashBotton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //send flash button pressed
+                boolean hasFlash = getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+
+                if(hasFlash)
+                {
+                    System.out.println("OUTPUT: HAS FLASH!!!! ");
+                    Camera cam = Camera.open();
+                    Camera.Parameters p = cam.getParameters();
+                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                    cam.setParameters(p);
+                    cam.startPreview();
+                }
+                else
+                {
+                    //SHOW ALERT IR DOESNT SUPPORT FLASH
+                }
+
+            }
+        });
 
         //send sound morse msg
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        sendSoundBotton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 playlist = logic.constructSoundMessage(translatedText);
@@ -68,11 +100,9 @@ public class MainActivity extends AppCompatActivity {
                 mp = MediaPlayer.create(MainActivity.this, playlist.get(i));
                 mp.start();
                 timer = new Timer();
-                if (playlist.size()>1)
-                {
+                if (playlist.size() > 1) {
                     playNext();
-                }
-                else{
+                } else {
                     System.out.println("OUTPUT: finished playing");
 
                 }

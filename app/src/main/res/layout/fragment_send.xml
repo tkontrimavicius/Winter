@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Sound"
+                android:id="@+id/sendSound"
+            android:textSize="20dp"
+                android:shadowColor="#eb1515"
+                android:background="@drawable/button"
+                android:backgroundTint="#06def2"
+                android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="60dp"
+            android:layout_marginEnd="60dp" />
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send Flash"
+                android:id="@+id/sendFlash"
+            android:background="@drawable/button"
+                android:textSize="20dp"
+            android:layout_alignTop="@+id/sendSound"
+            android:layout_toLeftOf="@+id/sendSound"
+            android:layout_toStartOf="@+id/sendSound"
+            android:layout_marginRight="26dp"
+            android:layout_marginEnd="26dp" />
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/morseMsg"
+            android:hint="Enter your message here"
+                android:textSize="20dp"
+                android:shadowColor="#12f5d3"
+            android:lines="5"
+                android:longClickable="false"
+                android:layout_gravity="center_vertical"
+            android:layout_above="@+id/sendSound"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="45dp"
+            android:maxLines="6"
+            android:maxWidth="200dp"
+            android:maxLength="100"
+            android:nestedScrollingEnabled="false"
+            android:linksClickable="false"
+            android:text="Enter text message" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Translated text ...."
+            android:id="@+id/translated"
+            android:layout_marginTop="76dp"
+            android:textSize="20dp"
+            android:layout_below="@+id/sendSound"
+            android:layout_alignLeft="@+id/morseMsg"
+            android:layout_alignStart="@+id/morseMsg"
+            android:layout_alignRight="@+id/morseMsg"
+            android:layout_alignEnd="@+id/morseMsg" />
+    </RelativeLayout>
+
+</LinearLayout>

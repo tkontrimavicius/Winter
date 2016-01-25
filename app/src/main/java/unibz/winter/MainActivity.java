@@ -26,8 +26,11 @@ import unibz.winter.model.Msg;
 public class MainActivity extends AppCompatActivity {
     //The logic
     private  Controller logic = new Controller();
+    private String originalText;
     private  String translatedText;
     private String revertedText;
+    //Database handler
+    private DatabaseHandler db;
 
     //morse sound playlist
     private Timer timer;
@@ -50,20 +53,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        DatabaseHandler db = new DatabaseHandler(this);
+         db = new DatabaseHandler(this);
         // Inserting Contacts
-        Log.d("Insert: ", "Inserting ..");
-        db.addMsg(new Msg("msg 1", "morse 1"));
-        db.addMsg(new Msg("msg 2 ", "morse 2"));
-        db.addMsg(new Msg("msg 3", "morse 3"));
-        db.addMsg(new Msg("msg 4", "morse 4"));
+//        Log.d("Insert: ", "Inserting ..");
+//        db.addMsg(new Msg("msg 1", "morse 1", "sound"));
+//        db.addMsg(new Msg("msg 2 ", "morse 2", "flash"));
+//        db.addMsg(new Msg("msg 3", "morse 3", "sound"));
+//        db.addMsg(new Msg("msg 4qw", "morse 4", "flash21321"));
 
         // Reading all contacts
         Log.d("Reading: ", "Reading all contacts..");
         List<Msg> Msgs = db.getAllMsgs();
 
         for (int i = 0; i < Msgs.size(); i++) {
-            System.out.println("Reading: " + Msgs.get(i).getMsg());
+            System.out.println("Reading: " + Msgs.get(i).getMsg() +"-"+Msgs.get(i).getMorseMsg()+"-"+Msgs.get(i).getType());
 
         }
 
@@ -90,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("OUTPUT: FLASH SUPPORTED ");
                 if(hasFlash)
                 {
+                    db.addMsg(new Msg(originalText, translatedText, "flash"));
+
 
                     String[] symbols = translatedText.split("");
                     for (int i = 0; i <symbols.length ; i++) {
@@ -123,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setTextMessage();
+                db.addMsg(new Msg(originalText, translatedText, "sound"));
+
                 playlist = logic.constructSoundMessage(translatedText);
                 i = 0;
                 mp = MediaPlayer.create(MainActivity.this, playlist.get(i));
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     {
         EditText txtname = (EditText)findViewById(R.id.morseMsg);
         String textToSend      =  txtname.getText().toString();
+        originalText =textToSend;
 
         //text to translate
        // String textToSend = "SOS";

@@ -9,25 +9,13 @@ import java.util.ArrayList;
 import android.app.Application;
 import android.content.Context;
 
-import unibz.winter.model.DatabaseHandler;
 
 public class Controller extends Application{
-
-    private  ArrayList<DatabaseHandler> conversations = new ArrayList<DatabaseHandler>();
-
-
 
     //Making a playlist of sounds
     private ArrayList<Integer> playlist;
     private  int i=0;
 
-
-    public void saveMsg (Context context)
-    {
-        DatabaseHandler mDbHelper = new DatabaseHandler(context);//getContext()
-
-
-    }
 
    public String codeTextToMorse (String text) {
        Morse translator = new Morse(text);

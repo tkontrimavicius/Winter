@@ -40,8 +40,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="send"
-        android:id="@+id/send"
+        android:text="Send Sound"
+        android:id="@+id/sendSound"
         android:layout_below="@+id/reverted"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -56,4 +56,12 @@
         android:layout_below="@+id/reverted"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send flash"
+        android:id="@+id/sendFlash"
+        android:layout_alignBottom="@+id/sendSound"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,9 +15,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
+
+import unibz.winter.model.DatabaseHandler;
+import unibz.winter.model.Msg;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,26 +47,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//
-//        TextView translated = (TextView) findViewById(R.id.translated);
-//        TextView reverted = (TextView) findViewById(R.id.reverted);
-//        TextView text = (TextView) findViewById(R.id.text);
-//
-//        //text to translate
-//        String textToSend = "SOS";
-//        text.setText("Example text to send:"+textToSend);
-//
-//        //translating from text to morse
-//         translatedText = logic.codeTextToMorse(textToSend);
-//        translated.setText("From text to morse: " +translatedText);
-//
-//        //translating from morse to text again
-//         revertedText = logic.decodeMorseToText(translatedText);
-//        reverted.setText("Translated from morse: " + revertedText);
 
 
+
+        DatabaseHandler db = new DatabaseHandler(this);
+        // Inserting Contacts
+        Log.d("Insert: ", "Inserting ..");
+        db.addMsg(new Msg("msg 1", "morse 1"));
+        db.addMsg(new Msg("msg 2 ", "morse 2"));
+        db.addMsg(new Msg("msg 3", "morse 3"));
+        db.addMsg(new Msg("msg 4", "morse 4"));
+
+        // Reading all contacts
+        Log.d("Reading: ", "Reading all contacts..");
+        List<Msg> Msgs = db.getAllMsgs();
+
+        for (int i = 0; i < Msgs.size(); i++) {
+            System.out.println("Reading: " + Msgs.get(i).getMsg());
+
+        }
+
+
+
+
+
+        //setting the text currently in the text field
         setTextMessage();
-        
+
         //buttons
         Button sendSoundBotton=(Button)findViewById(R.id.sendSound);
         Button sendFlashBotton=(Button)findViewById(R.id.sendFlash);

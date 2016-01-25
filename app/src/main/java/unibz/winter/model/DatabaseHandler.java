@@ -20,6 +20,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "msg";
     private static final String KEY_MORSE = "morseMsg";
+    private static final String KEY_TYPE = "type";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,7 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_MORSE + " TEXT" + ")";
+                + KEY_MORSE + " TEXT,"+ KEY_TYPE + " TEXT" + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -52,6 +53,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, msg.getMsg()); // Msg Name
         values.put(KEY_MORSE, msg.getMorseMsg()); // Contact Phone
+        values.put(KEY_TYPE, msg.getType()); // Contact Phone
+
 
 
         // Inserting Row
@@ -65,13 +68,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
-                        KEY_NAME, KEY_MORSE }, KEY_ID + "=?",
+                        KEY_NAME, KEY_MORSE, KEY_TYPE }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
         Msg msg = new Msg(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3));
         // return msg
         return msg;
     }
@@ -108,7 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, msg.getMsg());
         values.put(KEY_MORSE, msg.getMorseMsg());
-
+        values.put(KEY_TYPE, msg.getType());
         // updating row
         return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(msg.getID()) });

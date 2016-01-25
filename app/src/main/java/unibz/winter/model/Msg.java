@@ -17,8 +17,9 @@ public class Msg {
         this.type = type;
 
     }
-    public Msg(String name, String morseMsg, String type){
-        this.msg = name;
+    public Msg(String msg, String morseMsg, String type){
+
+        this.msg = msg;
         this.morseMsg = morseMsg;
         this.type = type;
 
@@ -54,6 +55,6 @@ public class Msg {
         this.morseMsg = morseMsg;
     }
     public String getMorseMsg(){
-        return this.msg;
+        return this.morseMsg;
     }
 }

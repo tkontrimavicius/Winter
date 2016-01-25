@@ -54,8 +54,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, msg.getMsg()); // Msg Name
-        values.put(KEY_MORSE, msg.getMorseMsg()); // Contact Phone
-        values.put(KEY_TYPE, msg.getType()); // Contact Phone
+        values.put(KEY_MORSE, msg.getMorseMsg());
+
+        values.put(KEY_TYPE, msg.getType());
 
 
 
